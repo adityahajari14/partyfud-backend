@@ -104,7 +104,8 @@ export const createCartItem = async (
     // For CUSTOMISABLE packages, use total_price as-is (doesn't scale)
     if (packageData.customisation_type === 'FIXED') {
       const minPeople = packageData.minimum_people || 1;
-      basePrice = (Number(packageData.total_price) / minPeople) * guestCount;
+      const batches = Math.ceil(guestCount / minPeople);
+      basePrice = batches * Number(packageData.total_price);
     } else {
       // CUSTOMISABLE with custom price: use total_price as-is
       basePrice = Number(packageData.total_price);
@@ -376,7 +377,8 @@ export const updateCartItem = async (
       // For CUSTOMISABLE packages, use total_price as-is (doesn't scale)
       if (packageData.customisation_type === 'FIXED') {
         const minPeople = packageData.minimum_people || 1;
-        basePrice = (Number(packageData.total_price) / minPeople) * guestCount;
+        const batches = Math.ceil(guestCount / minPeople);
+        basePrice = batches * Number(packageData.total_price);
       } else {
         // CUSTOMISABLE with custom price: use total_price as-is
         basePrice = Number(packageData.total_price);
